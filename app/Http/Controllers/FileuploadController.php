@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
 use App\Models\MyImages;
 
@@ -34,20 +35,42 @@ class FileuploadController extends Controller
      */
     public function store(Request $request)
     {
-        if($request->get('file'))
-       {
-          $image = $request->get('file');
-          $name = time().'.' . explode('/', explode(':', substr($image, 0, strpos($image, ';')))[1])[1];
-          Image::make($request->get('file'))->save(public_path('upload/').$name);
+        if ($request->file('imgFile')) {
+            // $image = $request->get('file');
+            //$name = time().'.' . explode('/', explode(':', substr($image, 0, strpos($image, ';')))[1])[1];
+            //Image::make($request->get('file'))->save(public_path('upload/').$name);
+
+            $image64 = 'data:image/jpeg;base64,'. base64_encode(file_get_contents($request->file('imgFile')));
+            //echo $image64;
+
+            $folderPath = public_path('upload/');
+
+            $image_parts = explode(";base64,", $image64);
+            $image_type_aux = explode("image/", $image_parts[0]);
+            $image_type = $image_type_aux[1];
+            $image_base64 = base64_decode($image_parts[1]);
+
+            $imageName = uniqid() . '.png';
+
+            $imageFullPath = $folderPath . $imageName;
+            file_put_contents($imageFullPath, $image_base64);
+
+            $saveFile = new MyImages();
+            $saveFile->title = $imageName;
+            $saveFile->type = '1';
+            $saveFile->save();
+
+            return response()->json(['success' => 'Crop Image Saved/Uploaded Successfully']);
+        } else {
+            return response()->json(['error' => 'please add image']);
         }
 
 
 
-        $fileupload = new MyImages();
-        $fileupload->title=$name;
-        $fileupload->save();
-        return response()->json('Successfully added');
-
+        //$fileupload = new MyImages();
+        //$fileupload->title = $name;
+        //$fileupload->save();
+        //return response()->json('Successfully added');
     }
 
     public function imgResize(Request $request)
@@ -56,24 +79,24 @@ class FileuploadController extends Controller
             'name' => 'required',
             'imgFile' => 'required|image|mimes:jpg,jpeg,png,svg,gif|max:2048',
         ]);
-  
+
         $image = $request->file('imgFile');
-        $input['imagename'] = time().'.'.$image->extension();
-     
+        $input['imagename'] = time() . '.' . $image->extension();
+
         $filePath = public_path('/thumbnails');
 
         $img = Image::make($image->path());
         $img->resize(110, 110, function ($const) {
             $const->aspectRatio();
-        })->save($filePath.'/'.$input['imagename']);
-   
+        })->save($filePath . '/' . $input['imagename']);
+
         $filePath = public_path('/images');
         $image->move($filePath, $input['imagename']);
-   
+
         return back()
-            ->with('success','Image uploaded')
-            ->with('fileName',$input['imagename']);
-        }
+            ->with('success', 'Image uploaded')
+            ->with('fileName', $input['imagename']);
+    }
 
 
 

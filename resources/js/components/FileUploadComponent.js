@@ -14,12 +14,15 @@ export default class FileUploadComponent extends Component {
         this.onFormSubmit = this.onFormSubmit.bind(this)
         this.onChange = this.onChange.bind(this)
         this.fileUpload = this.fileUpload.bind(this)
+        console.log('default--2')
     }
     onFormSubmit(e) {
+        console.log('onFormSubmit--1')
         e.preventDefault()
         this.fileUpload(this.state.image);
     }
     onChange(e) {
+        console.log('onChange--2')
         let files = e.target.files || e.dataTransfer.files;
         if (!files.length)
             return;
@@ -27,6 +30,7 @@ export default class FileUploadComponent extends Component {
     }
 
     createImage(file) {
+        console.log('createImage--2')
         let reader = new FileReader();
         reader.onload = (e) => {
             this.setState({
@@ -36,6 +40,8 @@ export default class FileUploadComponent extends Component {
         reader.readAsDataURL(file);
     }
     fileUpload(image) {
+        
+        console.log('fileUpload--3')
         const url = 'http://localhost:8000/api/fileupload';
         const formData = { file: this.state.image }
         return post(url, formData)
@@ -46,25 +52,7 @@ export default class FileUploadComponent extends Component {
 
     render() {
         return (
-
-            <form onSubmit={this.onFormSubmit}>
-        <h1>React js Laravel File Upload Tutorial</h1>
-        <input type="file"  onChange={this.onChange} />
-        <button type="submit">Upload</button>
-      </form>
-      
-        )
-    }
-}
-
-
-// DOM element
-if (document.getElementById('mFileUploadComponent')) {
-    ReactDOM.render(<FileUploadComponent />, document.getElementById('mFileUploadComponent'));
-}
-
-
-/*       <div class="card mb-3" >
+            <div class="card mb-3" >
                 <div class="card-body">
                     <form onSubmit={this.onFormSubmit}>
                         <h1>File Upload</h1>
@@ -84,8 +72,8 @@ if (document.getElementById('mFileUploadComponent')) {
 
                         <div class="input-group mb-3">
                             <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="image" accept="image/*"/>
-                                <label class ="custom-file-label" for="image" onChange={this.onChange}>Choose photo</label>
+                                <input type="file" class="custom-file-input" id="image" accept="image/*"  onChange={this.onChange}/>
+                                <label class ="custom-file-label" for="image">Choose photo</label>
                             </div>
                         </div>
 
@@ -93,4 +81,14 @@ if (document.getElementById('mFileUploadComponent')) {
                     </form>
 
                 </div>
-            </div> */
+            </div>
+      
+        )
+    }
+}
+
+
+// DOM element
+if (document.getElementById('mFileUploadComponent')) {
+    ReactDOM.render(<FileUploadComponent />, document.getElementById('mFileUploadComponent'));
+}

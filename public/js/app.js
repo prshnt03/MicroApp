@@ -5457,18 +5457,21 @@ var FileUploadComponent = /*#__PURE__*/function (_Component) {
     _this.onFormSubmit = _this.onFormSubmit.bind(_assertThisInitialized(_this));
     _this.onChange = _this.onChange.bind(_assertThisInitialized(_this));
     _this.fileUpload = _this.fileUpload.bind(_assertThisInitialized(_this));
+    console.log('default--2');
     return _this;
   }
 
   _createClass(FileUploadComponent, [{
     key: "onFormSubmit",
     value: function onFormSubmit(e) {
+      console.log('onFormSubmit--1');
       e.preventDefault();
       this.fileUpload(this.state.image);
     }
   }, {
     key: "onChange",
     value: function onChange(e) {
+      console.log('onChange--2');
       var files = e.target.files || e.dataTransfer.files;
       if (!files.length) return;
       this.createImage(files[0]);
@@ -5478,6 +5481,7 @@ var FileUploadComponent = /*#__PURE__*/function (_Component) {
     value: function createImage(file) {
       var _this2 = this;
 
+      console.log('createImage--2');
       var reader = new FileReader();
 
       reader.onload = function (e) {
@@ -5491,7 +5495,8 @@ var FileUploadComponent = /*#__PURE__*/function (_Component) {
   }, {
     key: "fileUpload",
     value: function fileUpload(image) {
-      var url = 'http://localhost:8000/fileupload';
+      console.log('fileUpload--3');
+      var url = 'http://localhost:8000/api/fileupload';
       var formData = {
         file: this.state.image
       };
@@ -5502,17 +5507,66 @@ var FileUploadComponent = /*#__PURE__*/function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("form", {
-        onSubmit: this.onFormSubmit,
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("h1", {
-          children: "React js Laravel File Upload Tutorial"
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
-          type: "file",
-          onChange: this.onChange
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
-          type: "submit",
-          children: "Upload"
-        })]
+      return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+        "class": "card mb-3",
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+          "class": "card-body",
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("form", {
+            onSubmit: this.onFormSubmit,
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("h1", {
+              children: "File Upload"
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+              "class": "input-group mb-3",
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("select", {
+                "class": "custom-select",
+                id: "type",
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
+                  selected: true,
+                  children: "Choose..."
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
+                  value: "1",
+                  children: "Origonal"
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
+                  value: "2",
+                  children: "Square Origonal"
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
+                  value: "3",
+                  children: "Small 256x256"
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("option", {
+                  value: "4",
+                  children: "All three size"
+                })]
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+                "class": "input-group-append",
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
+                  "class": "input-group-text",
+                  "for": "type",
+                  children: "Type"
+                })
+              })]
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+              "class": "input-group mb-3",
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+                "class": "custom-file",
+                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
+                  type: "file",
+                  "class": "custom-file-input",
+                  id: "image",
+                  accept: "image/*",
+                  onChange: this.onChange
+                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
+                  "class": "custom-file-label",
+                  "for": "image",
+                  children: "Choose photo"
+                })]
+              })
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("button", {
+              type: "submit",
+              "class": "btn btn-primary",
+              children: "Upload"
+            })]
+          })
+        })
       });
     }
   }]);
@@ -5526,36 +5580,7 @@ var FileUploadComponent = /*#__PURE__*/function (_Component) {
 if (document.getElementById('mFileUploadComponent')) {
   react_dom__WEBPACK_IMPORTED_MODULE_2__.render( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(FileUploadComponent, {}), document.getElementById('mFileUploadComponent'));
 }
-/*       <div class="card mb-3" >
-                <div class="card-body">
-                    <form onSubmit={this.onFormSubmit}>
-                        <h1>File Upload</h1>
-
-                        <div class="input-group mb-3">
-                            <select class="custom-select" id="type">
-                                <option selected>Choose...</option>
-                                <option value="1">Origonal</option>
-                                <option value="2">Square Origonal</option>
-                                <option value="3">Small 256x256</option>
-                                <option value="4">All three size</option>
-                            </select>
-                            <div class="input-group-append">
-                                <label class="input-group-text" for="type">Type</label>
-                            </div>
-                        </div>
-
-                        <div class="input-group mb-3">
-                            <div class="custom-file">
-                                <input type="file" class="custom-file-input" id="image" accept="image/*"/>
-                                <label class ="custom-file-label" for="image" onChange={this.onChange}>Choose photo</label>
-                            </div>
-                        </div>
-
-                        <button type="submit" class="btn btn-primary">Upload</button>
-                    </form>
-
-                </div>
-            </div> */
+/*        */
 
 /***/ }),
 
